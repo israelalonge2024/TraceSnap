@@ -1,0 +1,242 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>TraceSnap - Lost & Found</title>
+    <link
+      rel="stylesheet"
+      href="https:cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+    />
+  </head>
+  <link rel="stylesheet" href="style.css" />
+  <body>
+    <!-- Auth Container -->
+    <div id="authContainer" class="auth-container">
+      <div class="auth-box">
+        <div class="auth-header">
+          <h1>TraceSnap</h1>
+          <p>Lost & Found Community</p>
+        </div>
+        <input type="text" id="authUsername" placeholder="Username" />
+        <input type="password" id="authPassword" placeholder="Password" />
+        <input
+          type="tel"
+          id="authPhone"
+          placeholder="Phone Number (Optional)"
+        />
+        <button class="btn btn-primary" onclick="handleLogin()">Log In</button>
+        <button class="btn btn-secondary" onclick="handleSignUp()">
+          Sign Up
+        </button>
+      </div>
+    </div>
+
+    <!-- Main App -->
+    <div id="appContainer" class="hidden">
+      <!-- Navigation -->
+      <nav class="nav-bar">
+        <div class="logo">TraceSnap</div>
+        <div class="nav-right">
+          <button class="icon-btn" onclick="toggleTheme()" title="Toggle theme">
+            <span id="themeIcon"> <i class="fas fa-sun"></i> </span>
+          </button>
+          <button class="icon-btn" onclick="toggleProfile()" title="Profile">
+            <span id="profileIcon"> <i class="fas fa-user"></i> </span>
+          </button>
+        </div>
+      </nav>
+
+      <!-- Feed View -->
+      <div id="feedView" class="app-container">
+        <!-- Notice -->
+
+        <!-- Search -->
+        <div class="search-container">
+          <div class="search-box">
+            <span> <i class="fas fa-search"></i></span>
+            <input
+              type="text"
+              id="searchInput"
+              placeholder="Search posts..."
+              oninput="handleSearch()"
+            />
+          </div>
+        </div>
+        <div class="notice">
+          <i class="fas fa-lightbulb"></i> Tip: Add clear photos & exact
+          location to recover items faster
+        </div>
+        <!-- Filters -->
+        <div class="filters">
+          <button
+            class="filter-btn active"
+            data-filter="all"
+            onclick="setFilter('all')"
+          >
+            All
+          </button>
+          <button
+            class="filter-btn"
+            data-filter="lost"
+            onclick="setFilter('lost')"
+          >
+            Lost
+          </button>
+          <button
+            class="filter-btn"
+            data-filter="found"
+            onclick="setFilter('found')"
+          >
+            Found
+          </button>
+        </div>
+        <!-- Posts Feed -->
+        <div id="feed"></div>
+
+        <!-- Categories -->
+        <div class="categories">
+          <span class="category-chip">
+            <i style="color: #8bb5d1" class="fas fa-phone"></i>
+            Phones</span
+          >
+          <span class="category-chip">
+            <i style="color: #8bb5d1" class="fas fa-bag-shopping"></i>
+            Bags</span
+          >
+          <span class="category-chip">
+            <i style="color: #8bb5d1" class="fas fa-laptop"></i>
+            Laptops</span
+          >
+          <span class="category-chip">
+            <i style="color: #8bb5d1" class="fas fa-key"></i>
+            Keys</span
+          >
+          <span class="category-chip">
+            <i style="color: #8bb5d1" class="fas fa-tshirt"></i>
+            Clothing</span
+          >
+          <span class="category-chip">
+            <i style="color: #8bb5d1" class="fas fa-file-alt"></i>
+            Documents</span
+          >
+          <span class="category-chip">
+            <i style="color: #8bb5d1" class="fas fa-credit-card"></i>
+            Cards</span
+          >
+        </div>
+        <!-- Hero Section -->
+        <div class="hero">
+          <h2>Lost Something?</h2>
+          <p>Find it faster with our campus community</p>
+        </div>
+        <!-- Tips -->
+        <div class="tips">
+          <h3>Tips to Recover Faster</h3>
+          <ul>
+            <li>Add a clear photo of the item</li>
+            <li>Select exact location where lost/found</li>
+            <li>Describe color, brand, and unique features</li>
+            <li>Add your contact number for quick responses</li>
+            <li>Check the feed daily for updates</li>
+          </ul>
+        </div>
+
+        <!-- Floating Add Button -->
+        <button class="fab" onclick="openPostModal()">
+          <i class="fas fa-add"></i>
+        </button>
+      </div>
+
+      <!-- Profile View -->
+      <div id="profileView" class="app-container hidden">
+        <div class="profile-header">
+          <div class="profile-info">
+            <div class="profile-avatar" id="profileAvatar"></div>
+            <div>
+              <h2 id="profileUsername"></h2>
+              <p class="handle" id="profileHandle"></p>
+            </div>
+          </div>
+
+          <!-- USER INFO-->
+
+          <div class="profile-stats">
+            <div class="stat-item">
+              <span class="stat-value" id="postCount">0</span>
+              Posts
+            </div>
+            <div class="stat-item">
+              <span class="stat-value" id="likeCount">0</span>
+              Likes
+            </div>
+          </div>
+          <button
+            class="btn btn-danger"
+            onclick="handleLogout()"
+            style="width: auto; padding: 8px 16px"
+          >
+            <i class="fas fa-sign-out-alt"></i> Logout
+          </button>
+        </div>
+        <div class="section-header">Your Posts</div>
+        <div id="userPosts"></div>
+      </div>
+
+      <!-- Footer -->
+      <div class="footer">
+        <p>
+          For FUOYE students. Reducing the rate at which students misplace their
+          belongings.
+        </p>
+        <p>&copy; 2025 TraceSnap v1.0</p>
+        <p style="font-weight: bold">Developed by Alonge Israel</p>
+      </div>
+    </div>
+
+    <!-- Post Modal -->
+    <div id="postModal" class="modal-overlay hidden">
+      <div class="modal">
+        <div class="modal-header">
+          <h2>Create Post</h2>
+          <button class="icon-btn" onclick="closePostModal()">✕</button>
+        </div>
+        <div class="modal-body">
+          <select id="postStatus">
+            <option value="">Select Type</option>
+            <option value="lost">Lost</option>
+            <option value="found">Found</option>
+          </select>
+          <select id="postItem">
+            <option value="">Select Item</option>
+            <option value="Phone">Phone</option>
+            <option value="Bag">Bag</option>
+            <option value="Laptop">Laptop</option>
+            <option value="Keys">Keys</option>
+            <option value="Wallet">Wallet</option>
+            <option value="Documents">Documents</option>
+            <option value="Clothing">Clothing</option>
+            <option value="Other">Other</option>
+          </select>
+          <textarea
+            id="postDescription"
+            placeholder="Describe the item..."
+            rows="4"
+          ></textarea>
+          <input type="text" id="postLocation" placeholder="Location" />
+          <input
+            type="tel"
+            id="postPhone"
+            placeholder="Contact Number (Optional)"
+          />
+          <input type="file" id="postImage" accept="image/*" />
+          <button class="btn btn-primary" onclick="handleCreatePost()">
+            Post
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <script src="script.js"></script>
+  </body>
+</html>
