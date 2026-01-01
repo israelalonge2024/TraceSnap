@@ -150,7 +150,7 @@ textarea {
   font-size: 15px;
   font-weight: bold;
   cursor: pointer;
-  transition: opacity 0.2s;
+  transition: opacity 0.3s;
 }
 
 .btn:hover {
@@ -722,3 +722,4 @@ textarea {
   width: 20px;
   height: 20px;
 }
+
